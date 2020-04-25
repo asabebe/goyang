@@ -25,6 +25,7 @@ package yang
 import (
 	"errors"
 	"fmt"
+	"log"
 	"reflect"
 	"strings"
 )
@@ -362,7 +363,7 @@ func initTypes(at reflect.Type) {
 					panic(fmt.Sprintf("got type %v, want %v", v.Type(), at))
 				}
 				fv := v.Elem().Field(i)
-				fmt.Sprintf("value=%+v", fv)
+				log.Printf("value=%+v", fv)
 				if fv.String() != "" {
 					return errors.New(s.Keyword + ": already set")
 				}
@@ -396,7 +397,7 @@ func initTypes(at reflect.Type) {
 					panic(fmt.Sprintf("given type %s, need type %s", v.Type(), at))
 				}
 				fv := v.Elem().Field(i)
-				fmt.Sprintf("value=%+v", fv)
+				log.printf("value=%+v", fv)
 				if !fv.IsNil() {
 					return errors.New(s.Keyword + ": already set")
 				}
