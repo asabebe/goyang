@@ -395,6 +395,7 @@ func initTypes(at reflect.Type) {
 					panic(fmt.Sprintf("given type %s, need type %s", v.Type(), at))
 				}
 				fv := v.Elem().Field(i)
+				fmt.Sprintf("value=%+v", fv)
 				if !fv.IsNil() {
 					return errors.New(s.Keyword + ": already set")
 				}
