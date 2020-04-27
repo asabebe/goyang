@@ -362,7 +362,8 @@ func TestMarshalJSON(t *testing.T) {
   },
   "Identities": [
     {
-      "Name": "ID_ONE"
+      "Name": "ID_ONE",
+      "IfFeature": null
     }
   ]
 }`,
@@ -589,9 +590,11 @@ func TestParseAndMarshal(t *testing.T) {
                 "Kind": 15,
                 "IdentityBase": {
                   "Name": "BASE",
+                  "IfFeature": null,
                   "Values": [
                     {
-                      "Name": "DERIVED"
+                      "Name": "DERIVED",
+                      "IfFeature": null
                     }
                   ]
                 }
@@ -627,14 +630,17 @@ func TestParseAndMarshal(t *testing.T) {
   "Identities": [
     {
       "Name": "BASE",
+      "IfFeature": null,
       "Values": [
         {
-          "Name": "DERIVED"
+          "Name": "DERIVED",
+          "IfFeature": null
         }
       ]
     },
     {
-      "Name": "DERIVED"
+      "Name": "DERIVED",
+      "IfFeature": null
     }
   ]
 }`,
@@ -723,7 +729,6 @@ func TestParseAndMarshal(t *testing.T) {
 
 	for _, tt := range tests {
 		ms := NewModules()
-
 		for _, mod := range tt.in {
 			if err := ms.Parse(mod.content, mod.name); err != nil {
 				t.Errorf("%s: ms.Parse(..., %v): parsing error with module: %v", tt.name, mod.name, err)

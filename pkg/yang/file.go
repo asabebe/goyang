@@ -95,6 +95,14 @@ func findFile(name string) (string, string, error) {
 		if best := scanDir(".", name, false); best != "" {
 			// we found a matching candidate in the local directory
 			name = best
+		} else {
+			for _, dir := range Path {
+				if best := scanDir(dir, name, false); best != "" {
+					// we found a matching candidate in the one of the path dirs
+					name = best
+					break
+				}
+			}
 		}
 	}
 
@@ -124,6 +132,10 @@ func findFile(name string) (string, string, error) {
 	return "", "", fmt.Errorf("no such file: %s", name)
 }
 
+// cases where files are named with @revision-date
+
+//var revDate = regexp.MustCompile(`(@\d{4}-\d{2}-\d{2})?\.yang`)
+
 // findInDir looks for a file named name in dir or any of its subdirectories if
 // recurse is true. if recurse is false, scan only the directory dir.
 func findInDir(dir, name string, recurse bool) string {
@@ -138,6 +150,7 @@ func findInDir(dir, name string, recurse bool) string {
 	}
 
 	for _, fi := range fis {
+
 		switch {
 		case !fi.IsDir():
 			if fn := fi.Name(); fn == name {

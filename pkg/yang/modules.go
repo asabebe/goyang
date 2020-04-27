@@ -18,7 +18,9 @@ package yang
 // include and import statements, which must be done prior to turning the
 // module into an Entry tree.
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Modules contains information about all the top level modules and
 // submodules that are read into it via its Read method.
@@ -184,7 +186,7 @@ func (ms *Modules) FindModule(n Node) *Module {
 		return n
 	}
 
-	// Try to read it in.
+	// Try to read it in.,
 	if err := ms.Read(name); err != nil {
 		return nil
 	}
