@@ -170,17 +170,21 @@ func (ms *Modules) resolveIdentities() []error {
 	for _, i := range identities.dict {
 		if i.Identity.Base != nil {
 			// This identity inherits from another identity.
-
 			root := RootNode(i.Identity)
-			base, baseErr := root.findIdentityBase(i.Identity.Base.asString())
+			for _, id := range i.Identity.Base {
 
-			if baseErr != nil {
-				errs = append(errs, baseErr...)
-				continue
+				base, baseErr := root.findIdentityBase(id.asString())
+
+				if baseErr != nil {
+					errs = append(errs, baseErr...)
+					continue
+				}
+
+				// Append this value to the children of the base identity.
+				base.Identity.Values = append(base.Identity.Values, i.Identity)
+
 			}
 
-			// Append this value to the children of the base identity.
-			base.Identity.Values = append(base.Identity.Values, i.Identity)
 		}
 	}
 
