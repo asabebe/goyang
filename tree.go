@@ -19,8 +19,8 @@ import (
 	"io"
 	"sort"
 
-	"github.com/openconfig/goyang/pkg/indent"
-	"github.com/openconfig/goyang/pkg/yang"
+	"github.com/asabebe/goyang/pkg/indent"
+	"github.com/asabebe/goyang/pkg/yang"
 )
 
 func init() {
@@ -99,6 +99,19 @@ func Write(w io.Writer, e *yang.Entry) {
 	}
 	// { to match the brace below to keep brace matching working
 	fmt.Fprintln(w, "}")
+
+	if len(e.Augmented) > 0 {
+		fmt.Fprintln(w, "augmented")
+		for _, a := range e.Augmented {
+			Write(indent.NewWriter(w, "  "), a)
+		}
+	}
+	if len(e.Augments) > 0 {
+		fmt.Fprintln(w, "augments")
+		for _, a := range e.Augments {
+			Write(indent.NewWriter(w, "  "), a)
+		}
+	}
 }
 
 func getTypeName(e *yang.Entry) string {

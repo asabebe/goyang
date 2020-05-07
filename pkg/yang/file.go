@@ -95,14 +95,6 @@ func findFile(name string) (string, string, error) {
 		if best := scanDir(".", name, false); best != "" {
 			// we found a matching candidate in the local directory
 			name = best
-		} else {
-			for _, dir := range Path {
-				if best := scanDir(dir, name, false); best != "" {
-					// we found a matching candidate in the one of the path dirs
-					name = best
-					break
-				}
-			}
 		}
 	}
 

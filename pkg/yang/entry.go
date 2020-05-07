@@ -487,6 +487,7 @@ func ToEntry(n Node) (e *Entry) {
 			Errors: []error{err},
 		}
 	}
+
 	if e := entryCache[n]; e != nil {
 		return e
 	}
