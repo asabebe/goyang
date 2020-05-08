@@ -201,10 +201,10 @@ foo3 value3;
 		},
 		{line: line(), in: `
 foo1 {
-    key value1;
-    foo2 {
-        key value2;
-    }
+	key value1;
+	foo2 {
+		key value2;
+	}
 }
 `,
 			out: []*Statement{
@@ -244,7 +244,7 @@ test.yang:2:19: {: not an identifier
 test.yang:2:21: unexpected }`,
 		},
 		{line: line(), in: `
-    }
+	}
 foo {
 	key: "value";
 }
@@ -324,27 +324,45 @@ Testing:
 `,
 		},
 		{line: line(),
-			in: `
-module base {
-   namespace "urn:mod";
-   prefix "base";
-
-   typedef base-type { type int32; }
-
-   grouping base-group {
-     description
-       "The base-group is used to test the
-        'uses' statement below.  This description
-        is here to simply include a multi-line
-        string as an example of multi-line strings";
-     leaf base-group-leaf {
-       config false;
-       type string;
-     }
-   }
-   uses base-group;
-}
-`, out: `module "base" {
+			in: `module base {
+				namespace "urn:mod";
+				prefix base;
+			  
+				typedef base-type {
+				  type int32;
+				}
+			  
+				grouping base-group {
+				  description
+					"The base-group is used to test the
+					 'uses' statement below.  This description
+					 is here to simply include a multi-line
+					 string as an example of multi-line strings";
+				  leaf base-group-leaf {
+					config false;
+					type string;
+				  }
+				  leaf another-base-group-leaf {
+					config false;
+					type string;
+				  }
+				}
+			  
+				uses base-group {
+				  augment "base-group-leaf" {
+					leaf augment-base-group-leaf {
+					  config false;
+					  type string;
+					}
+				  }
+				  augment "another-base-group-leaf" {
+					leaf augment-another-base-group-leaf {
+					  config false;
+					  type string;
+					}
+				  }
+				}
+	}`, out: `module "base" {
 	namespace "urn:mod";
 	prefix "base";
 	typedef "base-type" {
@@ -359,8 +377,25 @@ module base {
 			config "false";
 			type "string";
 		}
+		leaf "another-base-group-leaf" {
+			config "false";
+			type "string";
+		}
 	}
-	uses "base-group";
+	uses "base-group" {
+		augment "base-group-leaf" {
+			leaf "augment-base-group-leaf" {
+				config "false";
+				type "string";
+			}
+		}
+		augment "another-base-group-leaf" {
+			leaf "augment-another-base-group-leaf" {
+				config "false";
+				type "string";
+			}
+		}
+	}
 }
 `,
 		},
